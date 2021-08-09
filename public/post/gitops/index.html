@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="技术博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://techblog-umber.vercel.app//img/home-bg-jeep.jpg">
+    <meta property="twitter:image" content="https://techblog-umber.vercel.app//img/home-bg-jeep.jpg" />
+    
+
+    
+    <meta name="title" content="Gitops" />
+    <meta property="og:title" content="Gitops" />
+    <meta property="twitter:title" content="Gitops" />
+    
+
+    
+    <meta name="description" content="程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。">
+    <meta property="og:description" content="程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
+    <meta property="twitter:description" content="程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="博客, 个人网站, 互联网, Web, 云原生, PaaS, Istio, Kubernetes, 微服务, Microservice">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Gitops-</title>
+
+    <link rel="canonical" href="/post/gitops/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">技术博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94">技术随笔</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/books/">书籍</a></li>
+                    
+                        <li><a href="/top/about/">关于我</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-bg-jeep.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E8%BF%90%E7%BB%B4" title="运维">
+                            运维
+                        </a>
+                        
+                        <a class="tag" href="/tags/devops" title="devops">
+                            devops
+                        </a>
+                        
+                    </div>
+                    <h1>Gitops</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;robinfan&#34;
+                         
+                        on 
+                        Wednesday, August 4, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#gitops技术指南">GitOps技术指南</a>
+      <ul>
+        <li></li>
+        <li><a href="#管理声明式的-yaml">管理声明式的 YAML</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="gitops技术指南">GitOps技术指南</h2>
+<h4 id="1什么是gitops">1.什么是GitOps</h4>
+<p>GitOps 于 2017 年率先推出，是一种进行 Kubernetes 集群管理和应用程序交付的方式。GitOps 使用 Git 作为声明性基础设施和应用程序的单一事实来源。借助 GitOps，软件代理的使用可以针对 Git 与集群中运行的内容之间的任何差异发出警报，如果存在差异，Kubernetes 协调器会根据情况自动更新或回滚集群。以 Git 作为交付管道的中心，开发人员可以使用熟悉的工具发出拉取请求，以加速和简化 Kubernetes 的应用程序部署和操作任务。</p>
+<p><strong>构建云原生应用的运营模式</strong></p>
+<p>GitOps 可以概括为以下两点：</p>
+<ol>
+<li>Kubernetes 和其他云原生技术的运营模型，提供了一组最佳实践，可统一针对容器化集群和应用程序的 Git 部署、管理和监控。</li>
+<li>通往管理应用程序的开发人员体验的途径；其中端到端 CICD 管道和 Git 工作流应用于操作和开发。</li>
+</ol>
+<h5 id="gitops-与-devops-之间有何区别"><strong>GitOps 与 DevOps 之间有何区别？</strong></h5>
+<p>GitOps 和 <a href="https://www.redhat.com/zh/topics/devops">DevOps </a>确实在原则和目标上有着相同之处。DevOps 侧重于文化转变，为开发团队和运维团队提供了一种协同工作方式。</p>
+<p>GitOps 则为您提供工具和框架来采用 DevOps 实践，如协作、CI/CD 和版本控制，并将其应用于基础架构自动化和应用部署。</p>
+<p>开发人员可以在自己已经熟悉的代码存储库中作业，而运维部门则可以将其他必要组件落实到位。</p>
+<h4 id="2gitops原理">2.Gitops原理</h4>
+<p>要使用Gitops</p>
+<h5 id="1-整个系统以声明方式描述">#1. 整个系统以声明方式描述。</h5>
+<p>对于 Gitops，Kubernetes 只是许多现代云原生工具的一个例子，这些工具是“声明性的”并且可以被视为代码。声明性意味着配置由一组事实而不是一组指令来保证。在 Git 中对应用程序的声明进行版本控制后，您就有了单一的事实来源。然后，您的应用程序可以轻松部署到 Kubernetes 和从 Kubernetes 回滚。更重要的是，当灾难发生时，您的集群基础设施也可以可靠且快速地重现。</p>
+<h5 id="2-在-git-中版本化的规范所需系统状态">#2. 在 Git 中版本化的规范所需系统状态。</h5>
+<p>将您的系统声明存储在版本控制系统中，并作为您的标准事实来源，您就有了一个单一的地方，可以从中派生和驱动一切。这使回滚变得微不足道；您可以在其中使用 <code>Git revert</code> 返回到之前的应用程序状态。借助 Git 出色的安全保证，您还可以使用 SSH 密钥对提交进行签名，从而对代码的作者身份和出处实施强大的安全保证。</p>
+<h5 id="3-可自动应用于系统的已批准更改">#3. 可自动应用于系统的已批准更改。</h5>
+<p>一旦您在 Git 中保存了声明的状态，下一步就是允许对该状态的任何更改自动应用于您的系统。重要的是，您不需要集群凭据即可对系统进行更改。使用 GitOps，有一个隔离环境，状态定义位于其外部。这使您可以将您做什么和将如何做分开。</p>
+<h5 id="4-软件代理以确保正确性并在分歧时发出警报">#4. 软件代理以确保正确性并在分歧时发出警报。</h5>
+<p>一旦您的系统状态被声明并保持在版本控制之下，软件代理就会在现实与您的期望不符时通知您。代理的使用还可以确保您的整个系统能够自我修复。通过自我修复，我们不仅仅是指节点或 Pod 发生故障时（由 Kubernetes 处理），而是指更广泛的意义上，例如人为错误的情况。在这种情况下，软件代理充当您操作的反馈和控制回路。</p>
+<h4 id="3gitops优势">3.gitops优势</h4>
+<p>当对 Git 进行更改时，自动化交付管道会推出对基础架构的更改。但是 GitOps 的想法远不止于此——GitOps 使用工具将整个应用程序的实际生产状态与源代码控制下的状态进行比较，然后当您的集群与现实世界不匹配时，它会告诉您。</p>
+<p>通过应用 GitOps 最佳实践，您的基础设施和应用程序代码都有一个“事实来源”，允许开发团队提高速度并提高系统可靠性。</p>
+<p>Video <a href="https://vimeo.com/315294468">https://vimeo.com/315294468</a></p>
+<p>应用 GitOps 最佳实践的好处是深远的，并提供：</p>
+<ol>
+<li>提高生产力
+具有集成反馈控制回路的持续部署自动化加快了平均部署时间。您的团队每天可以交付 30-100 倍的变更，从而将整体开发产出提高 2-3 倍。</li>
+<li>增强的开发人员体验
+推送代码而不是容器。开发人员可以使用熟悉的工具（如 Git）更快速地管理 Kubernetes 的更新和功能，而无需了解 Kubernetes 的内部。新入职的开发人员可以在几天而不是几个月内快速上手并提高工作效率。</li>
+<li>提高稳定性
+当您使用 Git 工作流管理集群时，您会自动获得 Kubernetes 之外的所有集群更改的便捷审计日志。谁做了什么以及何时对您的集群进行审计跟踪，可用于满足 SOC 2 合规性并确保稳定性。</li>
+<li>更高的可靠性
+借助 Git 的恢复/回滚和分叉功能，您可以获得稳定且可重现的回滚。因为您的整个系统是在 Git 中描述的，所以您还有一个单一的事实来源，可以在崩溃后从中恢复，将恢复时间 (MTTR) 从几小时缩短到几分钟。</li>
+<li>一致性和标准化
+由于 GitOps 提供了一种用于进行基础架构、应用程序和 Kubernetes 附加组件更改的模型，因此您在整个组织中拥有一致的端到端工作流。不仅您的持续集成和持续部署管道都由拉取请求驱动，而且您的操作任务也可以通过 Git 完全重现。</li>
+<li>更强大的安全保证
+Git 强大的正确性和安全性保证，以用于跟踪和管理更改的强大密码技术为后盾，以及签署更改以证明作者和来源的能力是安全定义集群所需状态的关键。</li>
+</ol>
+<h4 id="4gitops-是持续交付与云原生的结合">4.GitOps 是持续交付与云原生的结合</h4>
+<h6 id="自由选择您需要的工具">自由选择您需要的工具</h6>
+<p>作为 CI/CD 管道的工作流，GitOps 被 <a href="https://thenewstack.io/the-best-ci-cd-tool-for-kubernetes-doesnt-exist/">描述为开发过程的圣杯。</a> 因为没有一个工具可以完成 CICD 管道中所需的一切，所以 GitOps 使您可以自由地为不同部分选择最佳工具。您可以从开源生态系统或闭源中选择一组工具，或者根据您的用例，您甚至可以将它们组合起来。创建 CICD 管道最困难的部分是将所有部分粘合在一起。</p>
+<p>无论您为交付管道选择什么，在 Git（或任何版本控制）中应用 GitOps 最佳实践都应该作为您流程的一个组成部分。这样做将使向持续交付的过渡更容易。这不仅从技术角度来看，而且从文化角度来看也是如此。</p>
+<h6 id="git-支持基础设施即代码-iac-工具">Git 支持基础设施即代码 (IAC) 工具</h6>
+<p>Kubernetes 只是许多现代云原生工具的一个例子，这些工具是“声明性的”并且可以被视为代码。声明式意味着配置是由一组事实而不是一组指令来保证的，例如，“有十个 redis 服务器”，而不是“启动十个 redis 服务器，然后告诉我它是否有效”。</p>
+<p>使用声明性工具，您可以在 Git 中控制整个配置文件集。通过使用 Git 作为事实来源，您的应用程序可以更轻松地部署到 Kubernetes 以及从 Kubernetes 回滚。更重要的是，当灾难发生时，您的集群基础设施可以可靠且快速地全部从 Git 复制。</p>
+<h6 id="iac-工具与-gitops">IAC 工具与 GitOps</h6>
+<p>可以按需配置服务器的基础设施即代码工具已经存在了很长一段时间。这些工具起源于保持基础设施配置版本化、备份和可从源代码控制重现的概念。</p>
+<p>但是现在 Kubernetes 几乎完全是声明式的，结合不可变容器，可以将其中一些概念扩展到管理应用程序及其操作系统。</p>
+<p>管理和比较基础架构和应用程序的当前状态的能力，以便您可以使用来自 Git 的完整审计跟踪来测试、部署、回滚、前滚，这就是 GitOps 哲学及其最佳实践的组成部分。这是可能的，因为 Kubernetes 几乎完全通过声明性配置进行管理，并且容器是不可变的。</p>
+<p>在 Weaveworks，我们使用 Terraform 和 Ansible 来配置服务器。我们还会在 Git 中备份这些配置文件并对其进行版本控制。IAC 工具及其相关配置文件构成了我们 GitOps 工作流程的核心部分，可在 Weaveworks 发生灾难时实现近乎即时的集群恢复。在<a href="http://www.weave.works/technologies/gitops-frequently-asked-questions">GitOps 常见问题 中</a>详细了解基础设施即代码工具与 GitOps 有何不同 。</p>
+<h6 id="如果我的系统偏离了事实来源怎么办">如果我的系统偏离了事实来源怎么办？</h6>
+<p>声明式配置工具可让您在 Git 中描述所需的真实状态。但是他们面临这样一个问题，即“现在真正正确的”是在实时系统中，这可能与源代码控制中描述的不同。</p>
+<ul>
+<li>您如何知道实时系统是否已收敛到所需状态？</li>
+<li>当这不同时你能得到通知吗？</li>
+<li>什么是“煤矿中的金丝雀”，它会在您遇到麻烦时通知您？</li>
+<li>如何触发集群和源代码控制之间的融合？</li>
+</ul>
+<p>这里有先有技术。</p>
+<p>IAC 工具如 Chef、Puppet 和 Ansible 支持“差异警报”等功能。这些有助于操作员了解何时可能需要采取措施将实时系统“融合”到预期状态（由配置脚本定义）。最近，最佳实践是部署不可变的镜像（例如容器），从而不太可能出现分歧。</p>
+<p>在“GitOps”模型中，我们使用 Git 来解决发散和收敛问题，并借助一组“差异”和“同步”工具（<a href="https://github.com/weaveworks/kubediff">kubediff，</a> 以及 terradiff 和 ansiblediff）将预期状态与实际状态进行比较。</p>
+<h6 id="gitops-建立在不可变的基础设施之上">GitOps 建立在不可变的基础设施之上</h6>
+<p>GitOps 充分利用了向不可变基础设施和声明式容器编排的转变。我们每天在 Weaveworks 管理多个部署。为了最大限度地降低部署后更改的风险，无论是有意的还是无意中通过“配置漂移”造成的，我们必须保持可重复且可靠的部署过程。</p>
+<p>我们整个系统的理想状态（又名“真相之源”）在 Git 中进行了描述。我们使用容器来实现不变性以及不同的云原生工具（如 Terraform 和 Ansible）来自动化和管理我们的配置。这些工具与容器和 Kubernetes 的声明性一起提供了我们在整个崩溃的情况下完全恢复所需的东西。</p>
+<h6 id="与-iac-工具配合使用">与 IAC 工具配合使用</h6>
+<p>当您将 GitOps 原则应用于“一切”时，包括机器配置、应用程序和服务以及警报规则和仪表板，所有这些都处于源代码控制之下。</p>
+<p>除了通过 Git 之外，不需要访问正在运行的系统。任何一组更改都可以原子地应用，并相应地有所不同。然后，Git 记录不仅是审计日志，而且是可用于来回回滚到任何快照的事务日志。</p>
+<h4 id="5gitops-工作流">5.GitOps 工作流</h4>
+<ol>
+<li>新功能的拉取请求被推送到 Git代码库 进行审查。</li>
+<li>代码由同事审查和批准。修改代码并重新批准后，将其合并到 Git。</li>
+<li>Git 合并触发 CI 和构建管道，运行一系列测试，然后最终构建一个新映像并将新映像存入注册表。</li>
+<li>jenkins 监视映像注册表，注意映像，从注册表中提取新映像并在配置存储库中更新其 YAML。</li>
+<li>Weave Cloud &lsquo;Deployment Synchronizer&rsquo;（安装到集群）检测到集群已过期。它从配置存储库中提取更改的清单并将新功能部署到生产中。</li>
+</ol>
+<h6 id="启用-gitops-的-cicd-管道">启用 GitOps 的 CICD 管道：</h6>
+<p><img src="https://images.contentstack.io/v3/assets/blt300387d93dabf50e/bltcc4877814a615ae1/5c9cdf30ce43ee193330f044/what-is-gitops.png" alt=""></p>
+<p><strong>工作流1</strong>：标准的 GitOps 流程</p>
+<p>这是标准的 GitOps 工作流，我们将应用程序的 YAML 描述推送到 GitOps 仓库中，GitOps Agent 就会自动同步状态变化。</p>
+<p><img src="https://bxdc-static.oss-cn-beijing.aliyuncs.com/images/20200527164034.png" alt="标准的 GitOps 流程">标准的 GitOps 流程</p>
+<p><strong>工作流2</strong>：镜像自动更新</p>
+<p>在这个工作流中，GitOps Agent 会根据指定的策略从容器镜像仓库中自动更新新版本的容器镜像，例如，我们可以设置这样的策略，如果镜像有一个小版本变化，我们就可以自动更新，因为它们是向后兼容的。</p>
+<p><img src="https://bxdc-static.oss-cn-beijing.aliyuncs.com/images/20200527165843.png" alt="镜像自动更新">镜像自动更新</p>
+<p><strong>工作流3</strong>：自动化金丝雀部署</p>
+<p>该工作流非常强大，我们可以在这里实现金丝雀自动化部署。有了这个，我们在用 Prometheus 测量 HTTP 请求成功率、请求平均持续时间和 Pods 健康状态等关键性能指标的同时，可以逐步将流量迁移到金丝雀实例上。</p>
+<p><img src="https://bxdc-static.oss-cn-beijing.aliyuncs.com/images/20200527170957.png" alt="自动化金丝雀部署">自动化金丝雀部署</p>
+<h3 id="管理声明式的-yaml">管理声明式的 YAML</h3>
+<p>假设我们有一个电子商务购物车应用，完整的应用程序定义如下所示。</p>
+<ol>
+<li>应用程序镜像。</li>
+<li>Pod、Deployment、Service、Volume 和 ConfigMap 的 YAML 文件。</li>
+<li>连接数据的一些 sealed secrets 对象。</li>
+<li>标记将 Istio 作为默认的集群服务治理策略网格。</li>
+<li>环境治理策略，比如 staging 环境1个副本，生产环境3个副本。</li>
+<li>标记添加节点亲和性和容忍用于高可用的节点调度。</li>
+<li>基于 Pod 标签的网络安全策略 YAML 声明。</li>
+</ol>
+<p>要构建一个最终的应用 YAML 描述文件，我们需要应用开发者、应用运维和集群运维人员的一些输入。</p>
+<p>假设我们是一个比较小的团队并且管理了很多的 Pod，下面的流程就可以来表示如何构建一个持续部署的自动化流水线。</p>
+<p><img src="https://bxdc-static.oss-cn-beijing.aliyuncs.com/images/20200527181931.png" alt="持续部署的自动化流水线">持续部署的自动化流水线</p>
+<p>这种关注点分离的方式深受 OAM（开放应用模型）的影响，该模型试图为云原生应用开发提供一个完善的框架。</p>
+<p>OAM(<a href="https://oam.dev/">https://oam.dev/</a>) 描述了一种模式：</p>
+<ul>
+<li><strong>开发人员</strong>负责定义应用组件。</li>
+<li><strong>应用运维人员</strong>负责创建这些组件的实例，并为其分配应用配置。</li>
+<li><strong>基础设施运维人员</strong>负责声明、安装和维护平台上的可用的底层服务。</li>
+</ul>
+<p>通过使用 OAM 框架，会将 YAML 的贡献者责任进行分离，当然这可能会根据你的团队组织结构和使用的 Kubernetes 集群类型有所变化。</p>
+<p><img src="https://bxdc-static.oss-cn-beijing.aliyuncs.com/images/20200527182540.png" alt="OAM">OAM</p>
+<h4 id="gitops用到的工具">gitops用到的工具</h4>
+<p><strong>Git</strong>：这是我们使用 GitOps 来存储 YAML 清单的基础。</p>
+<p><strong>Helm &amp; Kustomize</strong>：这是一个强大的组合，可以帮助我们生成声明式的 YAML 资源清单文件，我们可以使用 Helm 打包应用程序和它的依赖关系。然后 Kustomize 会帮助我们自定义和修补 YAML 文件，而不需要去改变原来的 YAML 文件。单独使用 <a href="https://medium.com/@imarunrk/helm-is-not-enough-you-also-need-kustomize-82bae896816e">Helm 是不够的</a>，特别是用于区分不同环境的资源清单的时候，我们还需要结合 Kustomize。</p>
+<p><img src="https://bxdc-static.oss-cn-beijing.aliyuncs.com/images/20200527184226.png" alt="Helm 结合 Kustomize">Helm 结合 Kustomize</p>
+<p><strong>Argo CD</strong>：这是一个 GitOps 持续交付工具，它可以作为一个 Agent，将 GitOps 仓库中的改动同步到 Kubernetes 集群中。</p>
+<p><strong>Flux</strong>：这是另外一个 GitOps 持续交付的工具，功能和 Argo CD 类似。</p>
+<p><strong>Flagger</strong>：这个工具和 Flux 配合使用，可以很好地实现金丝雀部署。</p>
+<p><img src="https://bxdc-static.oss-cn-beijing.aliyuncs.com/images/20200527183356.png" alt="工具">工具</p>
+<h4 id="6gitops的带来的好处">6.Gitops的带来的好处</h4>
+<h6 id="更快的开发">更快的开发</h6>
+<p>通过采用 GitOps 最佳实践，开发人员可以使用熟悉的工具（如 Git）更快速地管理 Kubernetes 的更新和功能。通过不断推动功能更新，企业更加敏捷，能够更快地响应客户需求，并在市场上更具竞争力。</p>
+<h6 id="更好的操作">更好的操作</h6>
+<p>使用 GitOps，您将拥有一个完整的端到端管道。不仅您的持续集成和持续部署管道都由拉取请求驱动，而且您的操作任务也可以通过 Git 完全重现。</p>
+<p>如果您使用的是 Weave Cloud，则还可以安全地部署到正在运行的集群，而不会泄露集群外部的敏感凭据。</p>
+<h6 id="更强的安全保障">更强的安全保障</h6>
+<p>Git 强大的正确性和安全性保证，以用于跟踪和管理更改的强大加密技术为后盾，以及签署更改以证明作者和来源的能力是正确和安全定义集群所需状态的关键。如果确实发生了安全漏洞，则可以使用不可变且可审计的真实来源重新创建一个独立于受感染系统的新系统，从而减少停机时间并实现更好的事件响应。</p>
+<p>打包软件和发布到生产环境之间的责任分离也体现了最小权限的安全原则，减少了妥协的影响并提供了更小的攻击面。</p>
+<h6 id="更轻松的合规性和审计">更轻松的合规性和审计</h6>
+<p>由于以安全的方式跟踪和记录更改，因此合规性和审计变得微不足道。使用 kubediff、terradiff 和 ansiblediff 等比较工具还允许您将集群状态的可信定义与实际运行的集群进行比较，确保可跟踪和可审计的更改与现实相符。</p>
+<h4 id="gitops四大组件">gitops四大组件</h4>
+<ol>
+<li><strong>Git 仓库</strong>：用来存储我们的应用程序的声明式定义的 YAML 文件的源代码仓库。</li>
+<li><strong>Kubernetes 集群</strong>：用于部署我们应用程序的底层集群。</li>
+<li><strong>同步代理</strong>：Kubernetes Operator 扩展，它的工作是将 Git 仓库和应用状态持续同步到集群中。</li>
+<li><strong>CD Pipeline</strong>：持续部署流水线，用来编排整个流程的持续部署流水线。</li>
+</ol>
+<p>关于这些组件如何协工作来创建 GitOps 流程的架构图如下所示。</p>
+<p><img src="https://bxdc-static.oss-cn-beijing.aliyuncs.com/images/20200527153616.png" alt="GitOps 流程"></p>
+<p>在上面的架构图中，YAML 文件的创建和修改分为应用开发、应用运维和集群运维三部分。</p>
+<p>如果你想在现有的项目中实施 GitOps，下面的几点可以帮助你实施：</p>
+<ol>
+<li>你可以一次只选择一个应用，用成功的案例来推动其他应用的改造。</li>
+<li>当选择第一个应用的时候，可以选择变化比较频繁的应用，这将有助于我们为成功案例建立一些可靠的指标说明。</li>
+<li>选择一个经常出问题的应用，使用了 GitOps 过后，这些应用的问题频率应该会下降不少，当它出现问题的时候，应该有更好的可观测性了。</li>
+<li>优先选择业务应用，而不是像 Istio、RBAC 集成的等运维复杂的应用。</li>
+<li>如果需要的话可以暂时引入人工审批的步骤。</li>
+</ol>
+<p><a href="https://www.weave.works/technologies/gitops/">参考资料</a></p>
+
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://techblog-umber.vercel.app/"><img src="/img/favicon.png" />技术博客</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/readme/" data-toggle="tooltip" data-placement="top" title="Golang 单元测试">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="技术博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:robinfan@live.cn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/your%20wechat%20qr%20code%20image">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/robinfan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/yourlinkedinid">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://stackoverflow.com/users/yourstackoverflowid">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+            
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 技术博客 2021
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

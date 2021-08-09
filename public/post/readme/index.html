@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="技术博客">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://techblog-umber.vercel.app//img/home-bg-jeep.jpg">
+    <meta property="twitter:image" content="https://techblog-umber.vercel.app//img/home-bg-jeep.jpg" />
+    
+
+    
+    <meta name="title" content="Golang 单元测试" />
+    <meta property="og:title" content="Golang 单元测试" />
+    <meta property="twitter:title" content="Golang 单元测试" />
+    
+
+    
+    <meta name="description" content="程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。">
+    <meta property="og:description" content="程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
+    <meta property="twitter:description" content="程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="博客, 个人网站, 互联网, Web, 云原生, PaaS, Istio, Kubernetes, 微服务, Microservice">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Golang 单元测试-</title>
+
+    <link rel="canonical" href="/post/readme/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">技术博客</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94">技术随笔</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/books/">书籍</a></li>
+                    
+                        <li><a href="/top/about/">关于我</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/home-bg-jeep.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/golang" title="Golang">
+                            Golang
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95" title="单元测试">
+                            单元测试
+                        </a>
+                        
+                    </div>
+                    <h1>Golang 单元测试</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                 &#34;robinfan&#34;
+                         
+                        on 
+                        Wednesday, August 4, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#内容大纲">内容大纲</a></li>
+    <li><a href="#单测的重要性">单测的重要性</a></li>
+    <li><a href="#go-单测基础知识">Go 单测基础知识</a>
+      <ul>
+        <li><a href="#基本规则">基本规则</a></li>
+        <li><a href="#go-test-使用"><code>go test</code> 使用</a></li>
+        <li><a href="#表格测试">表格测试</a></li>
+        <li><a href="#http-测试">HTTP 测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#其它测试框架">其它测试框架</a>
+      <ul>
+        <li><a href="#testify">Testify</a></li>
+        <li><a href="#goconvey">GoConvey</a></li>
+        <li><a href="#ginkgo">GinkGo</a></li>
+      </ul>
+    </li>
+    <li><a href="#其它-mock-库">其它 Mock 库</a>
+      <ul>
+        <li><a href="#gomock">GoMock</a></li>
+        <li><a href="#httpmock">HTTPMock</a></li>
+        <li><a href="#sqlmock">SQLMock</a></li>
+      </ul>
+    </li>
+    <li><a href="#与-docker-集成">与 Docker 集成</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+                
+                <h2 id="内容大纲">内容大纲</h2>
+<ul>
+<li>
+<p>单元测试的重要性</p>
+</li>
+<li>
+<p>Go 单元测试基础知识</p>
+</li>
+<li>
+<p>表格测试和 HTTP 测试</p>
+</li>
+<li>
+<p>其它测试框架</p>
+</li>
+<li>
+<p>其它 Mock 库</p>
+</li>
+<li>
+<p>与 Docker 集成</p>
+</li>
+</ul>
+<h2 id="单测的重要性">单测的重要性</h2>
+<ul>
+<li>
+<p>能够尽早的发现 bug</p>
+</li>
+<li>
+<p>方便 debugging</p>
+</li>
+<li>
+<p>方便代码重构</p>
+</li>
+<li>
+<p>提升代码质量</p>
+</li>
+<li>
+<p>使整个过程敏捷</p>
+</li>
+</ul>
+<p>讲这部分的目的是为了让团队达成共识 &mdash; <strong>单测很重要，我们必须要做好单元测试</strong>。</p>
+<h2 id="go-单测基础知识">Go 单测基础知识</h2>
+<h3 id="基本规则">基本规则</h3>
+<ul>
+<li>
+<p>通常我们的单元测试代码都放在以 <strong>_test.go</strong> 结尾的文件中，该文件一般和目标代码放在同一个 package 中。</p>
+</li>
+<li>
+<p>测试的方法以为 <strong>Test</strong> 开头，并且拥有唯一一个 <em><strong>Testing.T</strong> 的参数</em>*。**</p>
+</li>
+</ul>
+<h3 id="go-test-使用"><code>go test</code> 使用</h3>
+<ul>
+<li>
+<p><code>go test</code> 测试当前包</p>
+</li>
+<li>
+<p><code>go test some/pkg</code>  测试一个特定的包</p>
+</li>
+<li>
+<p><code>go test some/pkg/...</code> 递归测试一个特定包下面的所有包</p>
+</li>
+<li>
+<p><code>go test -v some/pkg -run ^TestSum$</code> 测试特定包下面的特定方法</p>
+</li>
+<li>
+<p><code>go test -cover</code> 查看单测覆盖率</p>
+</li>
+<li>
+<p><code>go test -count=1</code> 忽略缓存运行单测，注意如果以递归方式（./&hellip;）测试的时候，默认会使用 cache</p>
+</li>
+</ul>
+<h3 id="表格测试">表格测试</h3>
+<ul>
+<li>
+<p>使用匿名结构体批量构建自己的测试 case</p>
+</li>
+<li>
+<p>采用子测试的方式让测试输出更友好</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestIsIPV4WithTable</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">testCases</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">struct</span> {
+		<span style="color:#a6e22e">IP</span>    <span style="color:#66d9ef">string</span>
+		<span style="color:#a6e22e">valid</span> <span style="color:#66d9ef">bool</span>
+	}{
+		{<span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#66d9ef">false</span>},
+		{<span style="color:#e6db74">&#34;192.168.0&#34;</span>, <span style="color:#66d9ef">false</span>},
+		{<span style="color:#e6db74">&#34;192.168.x.1&#34;</span>, <span style="color:#66d9ef">false</span>},
+		{<span style="color:#e6db74">&#34;192.168.0.1.1&#34;</span>, <span style="color:#66d9ef">false</span>},
+		{<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>, <span style="color:#66d9ef">true</span>},
+		{<span style="color:#e6db74">&#34;192.168.0.1&#34;</span>, <span style="color:#66d9ef">true</span>},
+		{<span style="color:#e6db74">&#34;255.255.255.255&#34;</span>, <span style="color:#66d9ef">true</span>},
+		{<span style="color:#e6db74">&#34;120.52.148.118&#34;</span>, <span style="color:#66d9ef">true</span>},
+	}
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tc</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">testCases</span> {
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">IP</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">IsIPV4</span>(<span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">IP</span>) <span style="color:#f92672">!=</span> <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">valid</span> {
+				<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;IsIPV4(%s) should be %v&#34;</span>, <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">IP</span>, <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">valid</span>)
+			}
+		})
+	}
+}
+</code></pre></div><p>复制代码</p>
+<h3 id="http-测试">HTTP 测试</h3>
+<ul>
+<li>
+<p>使用 <code>httptest.NewRecorder</code> 来测试 HTTP Handler 而不需要真正进行 HTTP 监听</p>
+</li>
+<li>
+<p>可以使用 <code>errorReader</code> 来提高测试覆盖率</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">errorReader</span> <span style="color:#66d9ef">struct</span>{}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">errorReader</span>) <span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">p</span> []<span style="color:#66d9ef">byte</span>) (<span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;mock body error&#34;</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestLoginHandler</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+
+	<span style="color:#a6e22e">testCases</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">struct</span> {
+		<span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span>
+		<span style="color:#a6e22e">Code</span> <span style="color:#66d9ef">int</span>
+		<span style="color:#a6e22e">Body</span> <span style="color:#66d9ef">interface</span>{}
+	}{
+		{<span style="color:#e6db74">&#34;ok&#34;</span>, <span style="color:#ae81ff">200</span>, <span style="color:#e6db74">`{&#34;code&#34;:&#34;a@example.com&#34;, &#34;password&#34;:&#34;password&#34;}`</span>},
+		{<span style="color:#e6db74">&#34;read body error&#34;</span>, <span style="color:#ae81ff">500</span>, new(<span style="color:#a6e22e">errorReader</span>)},
+		{<span style="color:#e6db74">&#34;invalid format&#34;</span>, <span style="color:#ae81ff">400</span>, <span style="color:#e6db74">`{&#34;code&#34;:1, &#34;password&#34;:&#34;password&#34;}`</span>},
+		{<span style="color:#e6db74">&#34;invalid code&#34;</span>, <span style="color:#ae81ff">400</span>, <span style="color:#e6db74">`{&#34;code&#34;:&#34;a@example.com1&#34;, &#34;password&#34;:&#34;password&#34;}`</span>},
+		{<span style="color:#e6db74">&#34;invalid password&#34;</span>, <span style="color:#ae81ff">400</span>, <span style="color:#e6db74">`{&#34;code&#34;:&#34;a@example.com&#34;, &#34;password&#34;:&#34;password1&#34;}`</span>},
+	}
+
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tc</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">testCases</span> {
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Run</span>(<span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Name</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+
+			<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">body</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Reader</span>
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">stringBody</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Body</span>.(<span style="color:#66d9ef">string</span>); <span style="color:#a6e22e">ok</span> {
+				<span style="color:#a6e22e">body</span> = <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">NewReader</span>(<span style="color:#a6e22e">stringBody</span>)
+			} <span style="color:#66d9ef">else</span> {
+				<span style="color:#a6e22e">body</span> = <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Body</span>.(<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Reader</span>)
+			}
+
+			<span style="color:#a6e22e">req</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;POST&#34;</span>, <span style="color:#e6db74">&#34;http://example.com/foo&#34;</span>, <span style="color:#a6e22e">body</span>)
+			<span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">NewRecorder</span>()
+
+			<span style="color:#a6e22e">LoginHandler</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">req</span>)
+
+			<span style="color:#a6e22e">resp</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Result</span>()
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">StatusCode</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Code</span> {
+				<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;response code is invalid, expect=%d but got=%d&#34;</span>,
+					<span style="color:#a6e22e">tc</span>.<span style="color:#a6e22e">Code</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">StatusCode</span>)
+			}
+		})
+	}
+}
+</code></pre></div><p>复制代码</p>
+<p><strong>Go 单测基础知识</strong>这部分的内容主要是向大家讲解 Go 官方单测库 <a href="https://golang.org/pkg/testing">testing</a> 以及命令行 <a href="https://golang.org/pkg/cmd/go/internal/test">go test</a> 的使用。</p>
+<p>可以看到官方自带的库已经足够好用， 不仅带有 subtest 还有 httptest 的相关内容，对于中小型的项目而言使用官方的 testing 库足够。</p>
+<h2 id="其它测试框架">其它测试框架</h2>
+<p>虽然官方 <code>testing</code> 库足够优秀，但在一些较大项目上，它还是有很多需要完善的地方，如：</p>
+<ul>
+<li>
+<p>断言不够友好，需要通过大量 if</p>
+</li>
+<li>
+<p>持续集成不够，每次都要手动跑测试</p>
+</li>
+<li>
+<p>BDD 无支持</p>
+</li>
+<li>
+<p>测试 case 的文档自动化不够</p>
+</li>
+</ul>
+<p>所以我这里介绍了三种测试框架，针对以上几点都有一定的改进。</p>
+<h3 id="testify">Testify</h3>
+<ul>
+<li>
+<p>和 <code>go test</code> 无缝集成，直接使用该命令运行</p>
+</li>
+<li>
+<p>支持断言，写法更简便</p>
+</li>
+<li>
+<p>支持 mocking</p>
+</li>
+<li>
+<p><a href="https://github.com/stretchr/testify">https://github.com/stretchr/testify</a> （10k+ 关注）</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestIsIPV4WithTestify</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">assertion</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">assert</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">t</span>)
+
+	<span style="color:#a6e22e">assertion</span>.<span style="color:#a6e22e">False</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;&#34;</span>))
+	<span style="color:#a6e22e">assertion</span>.<span style="color:#a6e22e">False</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.168.0&#34;</span>))
+	<span style="color:#a6e22e">assertion</span>.<span style="color:#a6e22e">False</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.168.x.1&#34;</span>))
+	<span style="color:#a6e22e">assertion</span>.<span style="color:#a6e22e">False</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.168.0.1.1&#34;</span>))
+	<span style="color:#a6e22e">assertion</span>.<span style="color:#a6e22e">True</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>))
+	<span style="color:#a6e22e">assertion</span>.<span style="color:#a6e22e">True</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.168.0.1&#34;</span>))
+	<span style="color:#a6e22e">assertion</span>.<span style="color:#a6e22e">True</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;255.255.255.255&#34;</span>))
+	<span style="color:#a6e22e">assertion</span>.<span style="color:#a6e22e">True</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;120.52.148.118&#34;</span>))
+}
+</code></pre></div><p>复制代码</p>
+<h3 id="goconvey">GoConvey</h3>
+<ul>
+<li>
+<p><a href="https://github.com/smartystreets/goconvey">https://github.com/smartystreets/goconvey</a> （5k+ 关注）</p>
+</li>
+<li>
+<p>支持 BDD</p>
+</li>
+<li>
+<p>能够使用 <code>go test</code> 来运行测试</p>
+</li>
+<li>
+<p>能够通过浏览器查看测试结果</p>
+</li>
+<li>
+<p>自动加载更新</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestIsIPV4WithGoconvey</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;ip.IsIPV4()&#34;</span>, <span style="color:#a6e22e">t</span>, <span style="color:#66d9ef">func</span>() {
+		<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;should be invalid&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;empty string&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;&#34;</span>), <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#66d9ef">false</span>)
+			})
+
+			<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;with less length&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.0.1&#34;</span>), <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#66d9ef">false</span>)
+			})
+
+			<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;with more length&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.168.1.0.1&#34;</span>), <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#66d9ef">false</span>)
+			})
+
+			<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;with invalid character&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.168.x.1&#34;</span>), <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#66d9ef">false</span>)
+			})
+		})
+
+		<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;should be valid&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;loopback address&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>), <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#66d9ef">true</span>)
+			})
+
+			<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;extranet address&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;120.52.148.118&#34;</span>), <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#66d9ef">true</span>)
+			})
+		})
+	})
+}
+</code></pre></div><h3 id="ginkgo">GinkGo</h3>
+<ul>
+<li>
+<p><a href="https://github.com/onsi/ginkgo">https://github.com/onsi/ginkgo</a> （4K+ 关注）</p>
+</li>
+<li>
+<p>也是一个 BDD 测试框架</p>
+</li>
+<li>
+<p>能够使用 <code>go test</code></p>
+</li>
+<li>
+<p>有自己的断言库 <code>Gomega</code></p>
+</li>
+<li>
+<p>也支持自动加载更新</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">_</span> = <span style="color:#a6e22e">Describe</span>(<span style="color:#e6db74">&#34;Ip&#34;</span>, <span style="color:#66d9ef">func</span>() {
+	<span style="color:#a6e22e">Describe</span>(<span style="color:#e6db74">&#34;IsIPV4()&#34;</span>, <span style="color:#66d9ef">func</span>() {
+		<span style="color:#75715e">// fore content level prepare
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">BeforeEach</span>(<span style="color:#66d9ef">func</span>() {
+			<span style="color:#75715e">// prepare data before every case
+</span><span style="color:#75715e"></span>		})
+
+		<span style="color:#a6e22e">AfterEach</span>(<span style="color:#66d9ef">func</span>() {
+			<span style="color:#75715e">// clear data after every case
+</span><span style="color:#75715e"></span>		})
+
+		<span style="color:#a6e22e">Context</span>(<span style="color:#e6db74">&#34;should be invalid&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">It</span>(<span style="color:#e6db74">&#34;empty string&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">Expect</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;&#34;</span>)).<span style="color:#a6e22e">To</span>(<span style="color:#a6e22e">Equal</span>(<span style="color:#66d9ef">false</span>))
+			})
+
+			<span style="color:#a6e22e">It</span>(<span style="color:#e6db74">&#34;with less length&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">Expect</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.0.1&#34;</span>)).<span style="color:#a6e22e">To</span>(<span style="color:#a6e22e">Equal</span>(<span style="color:#66d9ef">false</span>))
+			})
+
+			<span style="color:#a6e22e">It</span>(<span style="color:#e6db74">&#34;with more length&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">Expect</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.168.1.0.1&#34;</span>)).<span style="color:#a6e22e">To</span>(<span style="color:#a6e22e">Equal</span>(<span style="color:#66d9ef">false</span>))
+			})
+
+			<span style="color:#a6e22e">It</span>(<span style="color:#e6db74">&#34;with invalid character&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">Expect</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;192.168.x.1&#34;</span>)).<span style="color:#a6e22e">To</span>(<span style="color:#a6e22e">Equal</span>(<span style="color:#66d9ef">false</span>))
+			})
+		})
+
+		<span style="color:#a6e22e">Context</span>(<span style="color:#e6db74">&#34;should be valid&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">It</span>(<span style="color:#e6db74">&#34;loopback address&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">Expect</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;127.0.0.1&#34;</span>)).<span style="color:#a6e22e">To</span>(<span style="color:#a6e22e">Equal</span>(<span style="color:#66d9ef">true</span>))
+			})
+
+			<span style="color:#a6e22e">It</span>(<span style="color:#e6db74">&#34;extranet address&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">Expect</span>(<span style="color:#a6e22e">IsIPV4</span>(<span style="color:#e6db74">&#34;120.52.148.118&#34;</span>)).<span style="color:#a6e22e">To</span>(<span style="color:#a6e22e">Equal</span>(<span style="color:#66d9ef">true</span>))
+			})
+		})
+	})
+})
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestGinkgotesting</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">RegisterFailHandler</span>(<span style="color:#a6e22e">Fail</span>)
+	<span style="color:#a6e22e">RunSpecs</span>(<span style="color:#a6e22e">t</span>, <span style="color:#e6db74">&#34;Ginkgotesting Suite&#34;</span>)
+}
+</code></pre></div><h2 id="其它-mock-库">其它 Mock 库</h2>
+<p>到目前为止我们已经掌握了 Go 官方库 testing 和其它常见的测试框架的用法，能够方便我们编写和运行常规的单元测试。</p>
+<p>但我们的系统往往比较复杂，依赖很多服务和基础组建，比如一个 Web 服务往往依赖 MySQL、Redis 等，这里主要讲解采用模拟（mock - 屏蔽掉这些服务的实际调用）的方式来测试我们的代码逻辑。</p>
+<h3 id="gomock">GoMock</h3>
+<ul>
+<li>
+<p><a href="https://github.com/golang/mock">https://github.com/golang/mock</a> （4k+ 关注）</p>
+</li>
+<li>
+<p>golang 官方推出的 mock 库</p>
+</li>
+<li>
+<p>针对接口进行 mock</p>
+</li>
+<li>
+<p>支持 mock 和 stub</p>
+</li>
+<li>
+<p>采用 <code>mockgen</code> 生成代码</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestPostIndexWithGoMock</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">ctrl</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gomock</span>.<span style="color:#a6e22e">NewController</span>(<span style="color:#a6e22e">t</span>)
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">ctrl</span>.<span style="color:#a6e22e">Finish</span>()
+
+	<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;PostController.Index&#34;</span>, <span style="color:#a6e22e">t</span>, <span style="color:#66d9ef">func</span>() {
+		<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;should be 200&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">posts</span> <span style="color:#f92672">:=</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">post</span>.<span style="color:#a6e22e">PostModel</span>{
+				{<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;title&#34;</span>, <span style="color:#e6db74">&#34;body&#34;</span>},
+				{<span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#34;title2&#34;</span>, <span style="color:#e6db74">&#34;body2&#34;</span>},
+			}
+
+			<span style="color:#a6e22e">m</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewMockPostService</span>(<span style="color:#a6e22e">ctrl</span>)
+			<span style="color:#a6e22e">m</span>.
+				<span style="color:#a6e22e">EXPECT</span>().
+				<span style="color:#a6e22e">List</span>().
+				<span style="color:#a6e22e">Return</span>(<span style="color:#a6e22e">posts</span>, <span style="color:#66d9ef">nil</span>)
+
+			<span style="color:#a6e22e">handler</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">post</span>.<span style="color:#a6e22e">PostController</span>{
+				<span style="color:#a6e22e">PostService</span>: <span style="color:#a6e22e">m</span>,
+			}
+
+			<span style="color:#a6e22e">req</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;http://example.com/foo&#34;</span>, <span style="color:#66d9ef">nil</span>)
+			<span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">NewRecorder</span>()
+
+			<span style="color:#a6e22e">handler</span>.<span style="color:#a6e22e">Index</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">req</span>)
+
+			<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Result</span>().<span style="color:#a6e22e">StatusCode</span>, <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#ae81ff">200</span>)
+		})
+
+		<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;should be 500&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">m</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewMockPostService</span>(<span style="color:#a6e22e">ctrl</span>)
+			<span style="color:#a6e22e">m</span>.
+				<span style="color:#a6e22e">EXPECT</span>().
+				<span style="color:#a6e22e">List</span>().
+				<span style="color:#a6e22e">Return</span>(<span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;list post with error&#34;</span>))
+
+			<span style="color:#a6e22e">handler</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">post</span>.<span style="color:#a6e22e">PostController</span>{
+				<span style="color:#a6e22e">PostService</span>: <span style="color:#a6e22e">m</span>,
+			}
+
+			<span style="color:#a6e22e">req</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;http://example.com/foo&#34;</span>, <span style="color:#66d9ef">nil</span>)
+			<span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">NewRecorder</span>()
+			<span style="color:#a6e22e">handler</span>.<span style="color:#a6e22e">Index</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">req</span>)
+			<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Result</span>().<span style="color:#a6e22e">StatusCode</span>, <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#ae81ff">500</span>)
+		})
+	})
+}
+</code></pre></div><h3 id="httpmock">HTTPMock</h3>
+<ul>
+<li>
+<p><a href="https://github.com/jarcoal/httpmock">https://github.com/jarcoal/httpmock</a> （1K 关注）</p>
+</li>
+<li>
+<p>针对 HTTP Request 来进行 mocking</p>
+</li>
+<li>
+<p>能够自定义任意的 HTTP Response</p>
+</li>
+<li>
+<p>截止 HTTP Request 直接返回自定义的 Response</p>
+</li>
+<li>
+<p>给予正则匹配</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestPostClientFetch</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">httpmock</span>.<span style="color:#a6e22e">Activate</span>()
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">httpmock</span>.<span style="color:#a6e22e">DeactivateAndReset</span>()
+
+	<span style="color:#a6e22e">postFetchURL</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;https://api.mybiz.com/posts&#34;</span>
+
+	<span style="color:#a6e22e">client</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">PostClient</span>{
+		<span style="color:#a6e22e">Client</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Client</span>{
+			<span style="color:#a6e22e">Transport</span>: <span style="color:#a6e22e">httpmock</span>.<span style="color:#a6e22e">DefaultTransport</span>,
+		},
+	}
+
+	<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;PostClient.Fetch&#34;</span>, <span style="color:#a6e22e">t</span>, <span style="color:#66d9ef">func</span>() {
+		<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;without error&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">httpmock</span>.<span style="color:#a6e22e">RegisterResponder</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#a6e22e">postFetchURL</span>,
+				<span style="color:#a6e22e">httpmock</span>.<span style="color:#a6e22e">NewStringResponder</span>(<span style="color:#ae81ff">200</span>, <span style="color:#e6db74">`[{&#34;id&#34;: 1, &#34;title&#34;: &#34;title&#34;, &#34;body&#34;: &#34;body&#34;}]`</span>))
+
+			<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">Fetch</span>(<span style="color:#a6e22e">postFetchURL</span>, <span style="color:#ae81ff">1</span>)
+			<span style="color:#a6e22e">So</span>(len(<span style="color:#a6e22e">items</span>), <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#ae81ff">1</span>)
+			<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#66d9ef">nil</span>)
+		})
+
+		<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;with error&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;response data invalid&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">httpmock</span>.<span style="color:#a6e22e">RegisterResponder</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#a6e22e">postFetchURL</span>,
+					<span style="color:#a6e22e">httpmock</span>.<span style="color:#a6e22e">NewStringResponder</span>(<span style="color:#ae81ff">200</span>, <span style="color:#e6db74">`[{&#34;id&#34;: &#34;213&#34;}]`</span>))
+
+				<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">Fetch</span>(<span style="color:#a6e22e">postFetchURL</span>, <span style="color:#ae81ff">1</span>)
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">ShouldBeEmpty</span>)
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">ShouldNotBeNil</span>)
+			})
+
+			<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;without error&#34;</span>, <span style="color:#66d9ef">func</span>() {
+				<span style="color:#a6e22e">httpmock</span>.<span style="color:#a6e22e">RegisterResponder</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#a6e22e">postFetchURL</span>,
+					<span style="color:#a6e22e">httpmock</span>.<span style="color:#a6e22e">NewStringResponder</span>(<span style="color:#ae81ff">500</span>, <span style="color:#e6db74">`some error`</span>))
+
+				<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">Fetch</span>(<span style="color:#a6e22e">postFetchURL</span>, <span style="color:#ae81ff">1</span>)
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">ShouldBeEmpty</span>)
+				<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">ShouldContainSubstring</span>, <span style="color:#e6db74">&#34;some error&#34;</span>)
+			})
+		})
+	})
+}
+</code></pre></div><h3 id="sqlmock">SQLMock</h3>
+<ul>
+<li>
+<p><a href="https://github.com/DATA-DOG/go-sqlmock">https://github.com/DATA-DOG/go-sqlmock</a> （2k+ 关注）</p>
+</li>
+<li>
+<p>针对 <code>database/sql</code> 的所有接口进行 mock</p>
+</li>
+<li>
+<p>基于正则表达式进行匹配</p>
+</li>
+<li>
+<p>支持 查询、更新、事务等 mock</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestPostDaoList</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">mock</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sqlmock</span>.<span style="color:#a6e22e">New</span>()
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;an error &#39;%s&#39; was not expected when opening a stub database connection&#34;</span>, <span style="color:#a6e22e">err</span>)
+	}
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Close</span>()
+
+	<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;PostDao.Fetch&#34;</span>, <span style="color:#a6e22e">t</span>, <span style="color:#66d9ef">func</span>() {
+		<span style="color:#a6e22e">dao</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">post</span>.<span style="color:#a6e22e">NewPostDao</span>(<span style="color:#a6e22e">db</span>)
+
+		<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;should be successful&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">rows</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sqlmock</span>.<span style="color:#a6e22e">NewRows</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;id&#34;</span>, <span style="color:#e6db74">&#34;title&#34;</span>, <span style="color:#e6db74">&#34;body&#34;</span>}).
+				<span style="color:#a6e22e">AddRow</span>(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;post 1&#34;</span>, <span style="color:#e6db74">&#34;hello&#34;</span>).
+				<span style="color:#a6e22e">AddRow</span>(<span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#34;post 2&#34;</span>, <span style="color:#e6db74">&#34;world&#34;</span>)
+			<span style="color:#a6e22e">mock</span>.<span style="color:#a6e22e">ExpectQuery</span>(<span style="color:#e6db74">&#34;^SELECT (.+) FROM posts$&#34;</span>).
+				<span style="color:#a6e22e">WithArgs</span>().<span style="color:#a6e22e">WillReturnRows</span>(<span style="color:#a6e22e">rows</span>)
+
+			<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">List</span>()
+			<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">ShouldHaveLength</span>, <span style="color:#ae81ff">2</span>)
+			<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">ShouldBeNil</span>)
+
+		})
+
+		<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;should be failed&#34;</span>, <span style="color:#66d9ef">func</span>() {
+			<span style="color:#a6e22e">mock</span>.<span style="color:#a6e22e">ExpectQuery</span>(<span style="color:#e6db74">&#34;^SELECT (.+) FROM posts$&#34;</span>).
+				<span style="color:#a6e22e">WillReturnError</span>(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;list post error&#34;</span>))
+
+			<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dao</span>.<span style="color:#a6e22e">List</span>()
+			<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">ShouldBeNil</span>)
+			<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">ShouldContainSubstring</span>, <span style="color:#e6db74">&#34;list post error&#34;</span>)
+		})
+	})
+}
+</code></pre></div><p>复制代码</p>
+<h2 id="与-docker-集成">与 Docker 集成</h2>
+<p>虽然我们可以采用 Mock 的方式屏蔽掉某些服务，但是还是存在某些服务比较复杂，很难 mock（如 MongoDB） ，而且有时我们确实想和依赖的服务做某些集成测试。</p>
+<p>此时我们可以用 Docker 来快速构建我们的测试依赖环境，并且用完即释放、非常高效，下面就是一个包含 MongoDB 的 Dockerfile：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ae81ff">FROM ubuntu:16.04</span>
+<span style="color:#ae81ff">RUN apt-get update &amp;&amp; apt-get install -y libssl1.0.0 libssl-dev gcc</span>
+
+<span style="color:#ae81ff">RUN mkdir -p /data/db /opt/go/ /opt/gopath</span>
+<span style="color:#ae81ff">COPY mongodb/bin/* /usr/local/bin/</span>
+
+<span style="color:#ae81ff">ADD go /opt/go</span>
+<span style="color:#ae81ff">RUN cp /opt/go/bin/* /usr/local/bin/</span>
+<span style="color:#ae81ff">ENV GOROOT=/opt/go GOPATH=/opt/gopath</span>
+
+<span style="color:#ae81ff">WORKDIR /ws</span>
+<span style="color:#ae81ff">CMD mongod --fork --logpath /var/log/mongodb.log &amp;&amp; GOPROXY=off go test -mod=vendor ./...</span>
+</code></pre></div><p>复制代码</p>
+<h2 id="总结">总结</h2>
+<p>本次分享主要从单元测试的重要性入手，依次讲解了官方库 testing、社区测试框架（Testify、GoConvey、GinkGo）、Mock 相关技术、Docker 集成的内容，总结如下：</p>
+<ul>
+<li>
+<p>单元测试应该是一个团队共识</p>
+</li>
+<li>
+<p>单元测试并不难</p>
+</li>
+<li>
+<p>使用 Mock 能够使我们单元测试高效</p>
+</li>
+<li>
+<p>应该面向接口编程，方便做 mock （gomock）</p>
+</li>
+<li>
+<p>官方库足够优秀，包含表格测试、http 测试相关内容</p>
+</li>
+<li>
+<p>社区有很多优秀测试框架，能够让我们更好的实践 BDD 或者 TDD</p>
+</li>
+<li>
+<p>Docker 能够适用于更复杂的测试场景</p>
+</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li>
+<p><a href="https://github.com/songjiayang/gotesting">https://github.com/songjiayang/gotesting</a></p>
+</li>
+<li>
+<p><a href="https://golang.org/pkg/testing">https://golang.org/pkg/testing</a></p>
+</li>
+<li>
+<p><a href="https://golang.org/pkg/cmd/go/internal/test">https://golang.org/pkg/cmd/go/internal/test</a></p>
+</li>
+<li>
+<p><a href="https://golang.org/pkg/testing/#hdr-Subtests_and_Sub_benchmarks">https://golang.org/pkg/testing/#hdr-Subtests_and_Sub_benchmarks</a></p>
+</li>
+<li>
+<p><a href="https://golang.org/pkg/net/http/httptest">https://golang.org/pkg/net/http/httptest</a></p>
+</li>
+<li>
+<p><a href="https://github.com/stretchr/testify">https://github.com/stretchr/testify</a></p>
+</li>
+<li>
+<p><a href="https://github.com/onsi/ginkgo">https://github.com/onsi/ginkgo</a></p>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Behavior-driven_development">https://en.wikipedia.org/wiki/Behavior-driven_development</a></p>
+</li>
+<li>
+<p><a href="https://github.com/onsi/gomega">https://github.com/onsi/gomega</a></p>
+</li>
+<li>
+<p><a href="https://github.com/smartystreets/goconvey">https://github.com/smartystreets/goconvey</a></p>
+</li>
+<li>
+<p><a href="https://github.com/golang/mock">https://github.com/golang/mock</a></p>
+</li>
+<li>
+<p><a href="https://github.com/jarcoal/httpmock">https://github.com/jarcoal/httpmock</a></p>
+</li>
+<li>
+<p><a href="https://github.com/DATA-DOG/go-sqlmock">https://github.com/DATA-DOG/go-sqlmock</a></p>
+</li>
+</ul>
+
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://techblog-umber.vercel.app/"><img src="/img/favicon.png" />技术博客</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/post/gitops/" data-toggle="tooltip" data-placement="top" title="Gitops">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href=""></a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href='' rel="alternate" type="application/rss+xml" title="技术博客" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:robinfan@live.cn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/your%20wechat%20qr%20code%20image">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/robinfan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/yourlinkedinid">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://stackoverflow.com/users/yourstackoverflowid">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+            
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 技术博客 2021
+                    <br>
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

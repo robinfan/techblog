@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>技术博客</title>
+    <link>https://techblog-umber.vercel.app/</link>
+    <description>Recent content on 技术博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 04 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://techblog-umber.vercel.app/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gitops</title>
+      <link>https://techblog-umber.vercel.app/post/gitops/</link>
+      <pubDate>Wed, 04 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://techblog-umber.vercel.app/post/gitops/</guid>
+      <description>GitOps技术指南 1.什么是GitOps GitOps 于 2017 年率先推出，是一种进行 Kubernetes 集群管理和应用程序交付的方式。GitOps 使用 Git 作为声明性基础设施和</description>
+    </item>
+    
+    <item>
+      <title>Golang 单元测试</title>
+      <link>https://techblog-umber.vercel.app/post/readme/</link>
+      <pubDate>Wed, 04 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://techblog-umber.vercel.app/post/readme/</guid>
+      <description>内容大纲 单元测试的重要性 Go 单元测试基础知识 表格测试和 HTTP 测试 其它测试框架 其它 Mock 库 与 Docker 集成 单测的重要性 能够尽早的发现 bug 方便 debugging 方便代码重构 提升代码</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://techblog-umber.vercel.app/search/placeholder/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://techblog-umber.vercel.app/search/placeholder/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://techblog-umber.vercel.app/top/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://techblog-umber.vercel.app/top/about/</guid>
+      <description>个人介绍 个人介绍</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://techblog-umber.vercel.app/top/books/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://techblog-umber.vercel.app/top/books/</guid>
+      <description>Machine learning学习笔记 Coursera 在线课程 Machine learning 笔记讲师: 吴恩达(Andrew Ng) 课程地址：https://www.coursera.org/lear</description>
+    </item>
+    
+  </channel>
+</rss>
